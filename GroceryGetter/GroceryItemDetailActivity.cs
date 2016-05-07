@@ -17,6 +17,9 @@ namespace GroceryGetter
 	[Activity (Label = "GroceryItemDetailActivity")]			
 	public class GroceryItemDetailActivity : Activity
 	{
+		/***********************************/
+		/** Method properties and objects **/
+		/***********************************/
 		private GroceryListItem _groceryListItem;
 
 		private EditText _itemNameText;
@@ -24,12 +27,15 @@ namespace GroceryGetter
 
 		private bool isNewListItem;
 
-
+		/*********************/
+		/** Activity States **/
+		/*********************/
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
 			SetContentView (Resource.Layout.GroceryItemDetail);
 
+			// Bind properties to text fields
 			_itemNameText = FindViewById<EditText> (Resource.Id.txtGroceryItemName);
 			_itemQtyText = FindViewById<EditText> (Resource.Id.txtGroceryQtyValue);
 
@@ -50,21 +56,27 @@ namespace GroceryGetter
 			UpdateUI();
 		}
 
-		// Method to update text boxes in the UI
+		/*******************************************/
+		/** Method to update text boxes in the UI **/
+		/*******************************************/
 		protected void UpdateUI()
 		{
 			_itemNameText.Text = _groceryListItem.ItemName;
 			_itemQtyText.Text = _groceryListItem.ItemQty;
 		}
 
-		// Method to create the menu options
+		/***************************************/
+		/** Method to create the menu options **/
+		/***************************************/
 		public override bool OnCreateOptionsMenu(IMenu menu)
 		{
 			MenuInflater.Inflate (Resource.Menu.GroceryItemDetailMenu, menu);
 			return base.OnCreateOptionsMenu (menu);
 		}
 
-		// Method to prepare the menu options for display
+		/****************************************************/
+		/** Method to prepare the menu options for display **/
+		/****************************************************/
 		public override bool OnPrepareOptionsMenu (IMenu menu)
 		{
 			base.OnPrepareOptionsMenu (menu);
@@ -80,19 +92,22 @@ namespace GroceryGetter
 			return true;
 		}
 
-		// Method to handle selecting menu options
+		/*********************************************/
+		/** Method to handle selecting menu options **/
+		/*********************************************/
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
 			switch (item.ItemId)
 			{
+				// Save button (disk)
 				case Resource.Id.actionSave:
 					SaveGroceryListItem ();
 					return true;
-
+				// Delete button (garbge can)
 				case Resource.Id.actionDelete:
 					DeleteGroceryListItem ();
 					return true;
-
+				// Cancel button (large X)
 				case Resource.Id.actionCancel:
 					Finish ();
 					return true;
@@ -102,11 +117,14 @@ namespace GroceryGetter
 			}
 		}
 
-		// Method to save the list item
+		/******************************************/
+		/** Method to save the current list item **/
+		/******************************************/
 		protected void SaveGroceryListItem()
 		{
 			bool errors = false;
 
+			// Display error if the Name is empty
 			if (String.IsNullOrEmpty (_itemNameText.Text))
 			{
 				_itemNameText.Error = "Name cannot be empty";
@@ -117,36 +135,54 @@ namespace GroceryGetter
 				_itemNameText.Error = null;
 			}
 
+			// If an error was found, exit the method without saving
 			if (errors) {
 				return;
 			}
 				
+			// Update the GroceryListItem object with data from the text fields
 			_groceryListItem.ItemName = _itemNameText.Text;
 			_groceryListItem.ItemQty = _itemQtyText.Text;
 
+			// If the current list item is new, perform the "create" database action.
+			// Otherwise, perform the "save" (update) database action.
 			if (isNewListItem) {
 				DBManager.Instance.CreateGroceryListItem (_groceryListItem);
 			} else {
 				DBManager.Instance.SaveGroceryListItem (_groceryListItem);
 			}
 
+			// Display a Toast message to confirm the save action.
 			Toast toast = Toast.MakeText (this, String.Format("{0} saved.",_groceryListItem.ItemName),ToastLength.Short);
 			toast.Show ();
+
+			// Finish the activity
 			Finish ();
 		}
 
+		/******************************************************************/
+		/** If a delete action is confirmed, delete the item from the DB **/
+		/******************************************************************/
 		protected void ConfirmDelete(object sender, EventArgs e)
 		{
+			// Delete the current list item from the DB
+			DBManager.Instance.DeleteGroceryListItem (_groceryListItem.Id);
+
+			// Display a Toast message to confirm the delete action 
 			Toast toast = Toast.MakeText (this, String.Format("{0} deleted.",_groceryListItem.ItemName),ToastLength.Short);
 			toast.Show ();
 
-			DBManager.Instance.DeleteGroceryListItem (_groceryListItem.Id);
+			// Finish the activity
 			Finish();
 		}
 
-		// Method to delete the list item
+		/*****************************************************/
+		/** Method called when the delete button is clicked **/
+		/*****************************************************/
 		protected void DeleteGroceryListItem()
 		{
+			// Set up and display an alert dialog to confirm the delete.
+			// If the OK button is cliked, call ConfirmDelete() to complete the delete action.
 			AlertDialog.Builder alertConfirm = new AlertDialog.Builder (this);
 			alertConfirm.SetTitle ("Confirm delete");
 

@@ -17,12 +17,19 @@ namespace GroceryGetter
 	[Activity (Label = "GroceryGetter", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class GroceryListActivity : Activity
 	{
+		/***********************************/
+		/** Method properties and objects **/
+		/***********************************/
 		private ListView groceryListView;
 		private List<GroceryListItem> groceryListData;
 		private GroceryListViewAdapter groceryListAdapter;
-		// Create 
+
+		// Variable to store the scroll position when updating activity state **/
 		int scrollPosition;
 
+		/*********************/
+		/** Activity States **/
+		/*********************/
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
@@ -30,29 +37,27 @@ namespace GroceryGetter
 			// Set our view from the "main" layout resource
 			SetContentView (Resource.Layout.GroceryList);
 
+			// Bind properties and objects 
 			groceryListView = FindViewById<ListView> (Resource.Id.groceryListView);
 			groceryListView.ItemClick += GroceryItemClicked;
 
+			// Create a new database table to store the grocery list items
 			DBManager.Instance.CreateTable ();
 		}
 
 		protected override void OnResume ()
 		{
 			base.OnResume ();
-			getGroceryList ();
-		}
 
-		// Method to generate options menu
-		public override bool OnCreateOptionsMenu(IMenu menu)
-		{
-			// Inflate menus to be shown on ActionBar
-			MenuInflater.Inflate(Resource.Menu.GroceryListViewMenu, menu);
-			return base.OnPrepareOptionsMenu (menu);
+			// Update the grocery list
+			getGroceryList ();
 		}
 
 		protected override void OnSaveInstanceState (Bundle outState)
 		{
 			base.OnSaveInstanceState (outState);
+
+			// Save the current scroll position
 			int currentPosition = groceryListView.FirstVisiblePosition;
 			outState.PutInt ("scroll_position", currentPosition);
 		}
@@ -62,16 +67,38 @@ namespace GroceryGetter
 		protected override void OnRestoreInstanceState (Bundle savedInstanceState)
 		{
 			base.OnRestoreInstanceState (savedInstanceState);
+
+			// Set the last know scroll position
 			scrollPosition = savedInstanceState.GetInt ("scroll_position");
 		}
 
+		/***************************************/
+		/** Method to create the menu options **/
+		/***************************************/
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
+			// Inflate menus to be shown on ActionBar
+			MenuInflater.Inflate(Resource.Menu.GroceryListViewMenu, menu);
+			return base.OnCreateOptionsMenu (menu);
+		}
 
+		/****************************************************/
+		/** Method to prepare the menu options for display **/
+		/****************************************************/
+		public override bool OnPrepareOptionsMenu (IMenu menu)
+		{
+			base.OnPrepareOptionsMenu (menu);
+			return true;
+		}
 
-		// Method to handle selecting a menu option
+		/*********************************************/
+		/** Method to handle selecting menu options **/
+		/*********************************************/
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
 			switch (item.ItemId)
 			{
+				// New button (plus sign)
 				case Resource.Id.actionNew:
 					Intent intent = new Intent (this, typeof(GroceryItemDetailActivity));
 					StartActivity (intent);
@@ -81,32 +108,30 @@ namespace GroceryGetter
 			}
 		}
 
-		// Method to handle clicking a list item
+		/*******************************************/
+		/** Method to handle clicking a list item **/
+		/*******************************************/
 		protected void GroceryItemClicked(object sender, ListView.ItemClickEventArgs e)
 		{
 			GroceryListItem listItem = groceryListData [(int)e.Id];
 			int listIndex = (int)e.Id;
 
+			// Create a new Intent object to pass to GroceryItemDetailActivity
 			Intent listItemDetailIntent = new Intent(this, typeof(GroceryItemDetailActivity));
 
+			// Serialize the selected item into a Json string
 			string listItemJson = JsonConvert.SerializeObject (listItem);
 
+			// Add the Json object to the Intent
 			listItemDetailIntent.PutExtra ("listItem", listItemJson);
 
+			// Call GroceryItemDetailActivity and pass the selected list item
 			StartActivity (listItemDetailIntent);
-
-
-			/*
-			// Fetching the object at user clicked position
-			GroceryListItem item = groceryListData[(int)e.Id];
-
-			// Showing log result
-
-			Console.Out.WriteLine("Grocery item clicked: Name is {0}", item.ItemName);
-			*/
 		}
 
-		// Method to load data for the grocery list
+		/********************************************************/
+		/** Method to load grocery item data from the database **/
+		/********************************************************/
 		public void getGroceryList() {
 			groceryListData = DBManager.Instance.getGroceryListFromDatabase ();
 

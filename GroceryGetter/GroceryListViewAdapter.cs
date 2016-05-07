@@ -13,12 +13,18 @@ namespace GroceryGetter
 		private readonly Activity context;
 		private List<GroceryListItem> groceryListData;
 
+		/*****************/
+		/** Constructor **/
+		/*****************/
 		public GroceryListViewAdapter (Activity _context, List<GroceryListItem> _groceryListData) : base()
 		{
 			this.context = _context;
 			this.groceryListData = _groceryListData;
 		}
 
+		/*******************************/
+		/** Overriding parent methods **/
+		/*******************************/
 		public override int Count
 		{
 			get { return groceryListData.Count; }
@@ -34,6 +40,9 @@ namespace GroceryGetter
 			get { return groceryListData[index]; }
 		}
 
+		/********************************************************************/
+		/** Overriding GetView method and generating GroeryListItem layout **/
+		/********************************************************************/
 		public override View GetView (int position, View convertView, ViewGroup parent)
 		{
 			var view = convertView;
@@ -42,6 +51,7 @@ namespace GroceryGetter
 				view = context.LayoutInflater.Inflate (Resource.Layout.GroceryListItem, null);
 			}
 
+			// Generate groceryItem and set its text properties
 			GroceryListItem groceryItem = this[position];
 			view.FindViewById<TextView> (Resource.Id.groceryItemName).Text = groceryItem.ItemName;
 			view.FindViewById<TextView> (Resource.Id.groceryItemQty).Text = groceryItem.ItemQty;
