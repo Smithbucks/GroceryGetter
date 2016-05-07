@@ -43,6 +43,8 @@ namespace GroceryGetter
 			}
 
 			GroceryListItem groceryItem = this[position];
+			view.FindViewById<TextView> (Resource.Id.groceryItemName).Text = groceryItem.ItemName;
+			view.FindViewById<TextView> (Resource.Id.groceryItemQty).Text = groceryItem.ItemQty;
 
 			return view;
 		}

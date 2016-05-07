@@ -7,6 +7,9 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using SQLite;
+
 
 
 namespace GroceryGetter
@@ -15,10 +18,10 @@ namespace GroceryGetter
 	public class GroceryListActivity : Activity
 	{
 		private ListView groceryListView;
-		private ProgressBar progressBar;
 		private List<GroceryListItem> groceryListData;
 		private GroceryListViewAdapter groceryListAdapter;
-
+		// Create 
+		int scrollPosition;
 
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
@@ -30,9 +33,13 @@ namespace GroceryGetter
 			groceryListView = FindViewById<ListView> (Resource.Id.groceryListView);
 			groceryListView.ItemClick += GroceryItemClicked;
 
-			progressBar = FindViewById<ProgressBar> (Resource.Id.progressBar);
+			DBManager.Instance.CreateTable ();
+		}
 
-			DownloadGroceryListAsync ();
+		protected override void OnResume ()
+		{
+			base.OnResume ();
+			getGroceryList ();
 		}
 
 		// Method to generate options menu
@@ -43,16 +50,31 @@ namespace GroceryGetter
 			return base.OnPrepareOptionsMenu (menu);
 		}
 
+		protected override void OnSaveInstanceState (Bundle outState)
+		{
+			base.OnSaveInstanceState (outState);
+			int currentPosition = groceryListView.FirstVisiblePosition;
+			outState.PutInt ("scroll_position", currentPosition);
+		}
+
+
+
+		protected override void OnRestoreInstanceState (Bundle savedInstanceState)
+		{
+			base.OnRestoreInstanceState (savedInstanceState);
+			scrollPosition = savedInstanceState.GetInt ("scroll_position");
+		}
+
+
+
 		// Method to handle selecting a menu option
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
 			switch (item.ItemId)
 			{
 				case Resource.Id.actionNew:
-					// placeholder for creating new grocery item
-					return true;
-				case  Resource.Id.actionDelete:
-					// placeholder for deleting a grocery item
+					Intent intent = new Intent (this, typeof(GroceryItemDetailActivity));
+					StartActivity (intent);
 					return true;
 				default:
 					return base.OnOptionsItemSelected (item);
@@ -62,38 +84,34 @@ namespace GroceryGetter
 		// Method to handle clicking a list item
 		protected void GroceryItemClicked(object sender, ListView.ItemClickEventArgs e)
 		{
+			GroceryListItem listItem = groceryListData [(int)e.Id];
+			int listIndex = (int)e.Id;
+
+			Intent listItemDetailIntent = new Intent(this, typeof(GroceryItemDetailActivity));
+
+			string listItemJson = JsonConvert.SerializeObject (listItem);
+
+			listItemDetailIntent.PutExtra ("listItem", listItemJson);
+
+			StartActivity (listItemDetailIntent);
+
+
+			/*
 			// Fetching the object at user clicked position
 			GroceryListItem item = groceryListData[(int)e.Id];
 
 			// Showing log result
 
 			Console.Out.WriteLine("Grocery item clicked: Name is {0}", item.ItemName);
+			*/
 		}
 
-		// Temporary method to "download" data for the list items
-		public void DownloadGroceryListAsync() {
-			progressBar.Visibility = Android.Views.ViewStates.Visible;
-			groceryListData = GetGroceryListTestData ();
-			progressBar.Visibility = Android.Views.ViewStates.Gone;
+		// Method to load data for the grocery list
+		public void getGroceryList() {
+			groceryListData = DBManager.Instance.getGroceryListFromDatabase ();
 
 			groceryListAdapter = new GroceryListViewAdapter (this, groceryListData);
 			groceryListView.Adapter = groceryListAdapter;
-		}
-
-		private List<GroceryListItem> GetGroceryListTestData ()
-		{
-			List <GroceryListItem> listData = new List<GroceryListItem> ();
-
-			for (int i = 0; i < 20; i++) {
-				GroceryListItem GroceryListItem = new GroceryListItem ();
-				GroceryListItem.Id = i;
-				GroceryListItem.ItemName = "Name " + i;
-				GroceryListItem.ItemQty = "Qty: " + i.ToString();
-
-				listData.Add (GroceryListItem);
-			}
-
-			return listData;
 		}
 			
 	}

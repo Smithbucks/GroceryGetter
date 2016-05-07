@@ -3,4 +3,6 @@
 	<string name="app_name">GroceryGetter</string>
 	<string name="GroceryItemName">Item 1</string>
 	<string name="GroceryItemQty">Qty</string>
+	<string name="GroceryDetailName">Item Name</string>
+	<string name="GroceryDetailQty">Quantity</string>
 </resources>

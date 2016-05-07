@@ -799,16 +799,19 @@ namespace GroceryGetter
 			public const int abc_textfield_searchview_right_holo_light = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int ic_delete = 2130837591;
+			public const int ic_cancel = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public const int ic_new = 2130837592;
+			public const int ic_delete = 2130837592;
 			
 			// aapt resource value: 0x7f020059
-			public const int ic_refresh = 2130837593;
+			public const int ic_new = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public const int ic_save = 2130837594;
+			public const int ic_refresh = 2130837594;
+			
+			// aapt resource value: 0x7f02005b
+			public const int ic_save = 2130837595;
 			
 			static Drawable()
 			{
@@ -823,11 +826,17 @@ namespace GroceryGetter
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0a0044
-			public const int actionDelete = 2131361860;
+			// aapt resource value: 0x7f0a0049
+			public const int actionCancel = 2131361865;
 			
-			// aapt resource value: 0x7f0a0043
-			public const int actionNew = 2131361859;
+			// aapt resource value: 0x7f0a004a
+			public const int actionDelete = 2131361866;
+			
+			// aapt resource value: 0x7f0a004b
+			public const int actionNew = 2131361867;
+			
+			// aapt resource value: 0x7f0a0048
+			public const int actionSave = 2131361864;
 			
 			// aapt resource value: 0x7f0a001c
 			public const int action_bar = 2131361820;
@@ -901,17 +910,17 @@ namespace GroceryGetter
 			// aapt resource value: 0x7f0a002c
 			public const int expanded_menu = 2131361836;
 			
-			// aapt resource value: 0x7f0a0041
-			public const int groceryItemName = 2131361857;
+			// aapt resource value: 0x7f0a0046
+			public const int groceryItemName = 2131361862;
+			
+			// aapt resource value: 0x7f0a0047
+			public const int groceryItemQty = 2131361863;
 			
 			// aapt resource value: 0x7f0a0042
-			public const int groceryItemQty = 2131361858;
+			public const int groceryList = 2131361858;
 			
-			// aapt resource value: 0x7f0a003c
-			public const int groceryList = 2131361852;
-			
-			// aapt resource value: 0x7f0a003d
-			public const int groceryListView = 2131361853;
+			// aapt resource value: 0x7f0a0043
+			public const int groceryListView = 2131361859;
 			
 			// aapt resource value: 0x7f0a0000
 			public const int home = 2131361792;
@@ -928,8 +937,8 @@ namespace GroceryGetter
 			// aapt resource value: 0x7f0a0027
 			public const int image = 2131361831;
 			
-			// aapt resource value: 0x7f0a0040
-			public const int linearLayout1 = 2131361856;
+			// aapt resource value: 0x7f0a003d
+			public const int linearLayout1 = 2131361853;
 			
 			// aapt resource value: 0x7f0a0006
 			public const int listMode = 2131361798;
@@ -949,8 +958,8 @@ namespace GroceryGetter
 			// aapt resource value: 0x7f0a0007
 			public const int normal = 2131361799;
 			
-			// aapt resource value: 0x7f0a003e
-			public const int progressBar = 2131361854;
+			// aapt resource value: 0x7f0a0044
+			public const int progressBar = 2131361860;
 			
 			// aapt resource value: 0x7f0a0004
 			public const int progress_circular = 2131361796;
@@ -961,8 +970,11 @@ namespace GroceryGetter
 			// aapt resource value: 0x7f0a002f
 			public const int radio = 2131361839;
 			
-			// aapt resource value: 0x7f0a003f
-			public const int relativeLayout1 = 2131361855;
+			// aapt resource value: 0x7f0a0045
+			public const int relativeLayout1 = 2131361861;
+			
+			// aapt resource value: 0x7f0a003c
+			public const int scrollView1 = 2131361852;
 			
 			// aapt resource value: 0x7f0a0032
 			public const int search_badge = 2131361842;
@@ -1015,11 +1027,23 @@ namespace GroceryGetter
 			// aapt resource value: 0x7f0a0008
 			public const int tabMode = 2131361800;
 			
+			// aapt resource value: 0x7f0a003e
+			public const int textView1 = 2131361854;
+			
+			// aapt resource value: 0x7f0a0040
+			public const int textView2 = 2131361856;
+			
 			// aapt resource value: 0x7f0a002b
 			public const int title = 2131361835;
 			
 			// aapt resource value: 0x7f0a0020
 			public const int top_action_bar = 2131361824;
+			
+			// aapt resource value: 0x7f0a003f
+			public const int txtGroceryItemName = 2131361855;
+			
+			// aapt resource value: 0x7f0a0041
+			public const int txtGroceryQtyValue = 2131361857;
 			
 			// aapt resource value: 0x7f0a0021
 			public const int up = 2131361825;
@@ -1132,13 +1156,16 @@ namespace GroceryGetter
 			public const int abc_simple_decor = 2130968599;
 			
 			// aapt resource value: 0x7f040018
-			public const int GroceryList = 2130968600;
+			public const int GroceryItemDetail = 2130968600;
 			
 			// aapt resource value: 0x7f040019
-			public const int GroceryListItem = 2130968601;
+			public const int GroceryList = 2130968601;
 			
 			// aapt resource value: 0x7f04001a
-			public const int support_simple_spinner_dropdown_item = 2130968602;
+			public const int GroceryListItem = 2130968602;
+			
+			// aapt resource value: 0x7f04001b
+			public const int support_simple_spinner_dropdown_item = 2130968603;
 			
 			static Layout()
 			{
@@ -1154,7 +1181,10 @@ namespace GroceryGetter
 		{
 			
 			// aapt resource value: 0x7f0d0000
-			public const int GroceryListViewMenu = 2131558400;
+			public const int GroceryItemDetailMenu = 2131558400;
+			
+			// aapt resource value: 0x7f0d0001
+			public const int GroceryListViewMenu = 2131558401;
 			
 			static Menu()
 			{
@@ -1184,6 +1214,12 @@ namespace GroceryGetter
 		
 		public partial class String
 		{
+			
+			// aapt resource value: 0x7f0b0010
+			public const int GroceryDetailName = 2131427344;
+			
+			// aapt resource value: 0x7f0b0011
+			public const int GroceryDetailQty = 2131427345;
 			
 			// aapt resource value: 0x7f0b000e
 			public const int GroceryItemName = 2131427342;
